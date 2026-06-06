@@ -174,12 +174,46 @@ border-radius:10px;
 <h3>AI Search Filter</h3>
 
 <select id="province">
-<option>All Provinces</option>
-<option>Morobe</option>
-<option>NCD</option>
-<option>Madang</option>
+
+<option value="All">All Provinces</option>
+
+<!-- Highlands -->
+<optgroup label="Highlands Region">
 <option>Hela</option>
-<option>ENB</option>
+<option>Southern Highlands</option>
+<option>Enga</option>
+<option>Western Highlands</option>
+<option>Jiwaka</option>
+<option>Chimbu</option>
+</optgroup>
+
+<!-- Momase -->
+<optgroup label="Momase Region">
+<option>Morobe</option>
+<option>Madang</option>
+<option>East Sepik</option>
+<option>West Sepik</option>
+</optgroup>
+
+<!-- Southern -->
+<optgroup label="Southern Region">
+<option>NCD</option>
+<option>Central</option>
+<option>Gulf</option>
+<option>Milne Bay</option>
+<option>Oro</option>
+<option>Western</option>
+</optgroup>
+
+<!-- NGI -->
+<optgroup label="New Guinea Islands Region">
+<option>East New Britain</option>
+<option>West New Britain</option>
+<option>New Ireland</option>
+<option>Bougainville</option>
+<option>Manus</option>
+</optgroup>
+
 </select>
 
 <input type="date" id="dateFilter">
@@ -262,15 +296,19 @@ renderTable(logs);
 /* FILTER */
 function applyFilter(){
 
-let p=document.getElementById("province").value;
-let d=document.getElementById("dateFilter").value;
-let t=document.getElementById("timeFilter").value;
+let province = document.getElementById("province").value;
+let date = document.getElementById("dateFilter").value;
+let time = document.getElementById("timeFilter").value;
 
-let filtered=logs.filter(x=>
-(p==="All Provinces"||x.province===p) &&
-(!d||x.date===d) &&
-(!t||x.time===t)
-);
+let filtered = logs.filter(item => {
+
+let matchProvince = (province === "All" || item.province === province);
+let matchDate = (!date || item.date === date);
+let matchTime = (!time || item.time === time);
+
+return matchProvince && matchDate && matchTime;
+
+});
 
 renderTable(filtered);
 }
