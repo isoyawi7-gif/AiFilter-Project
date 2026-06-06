@@ -1,111 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PNG Internet Filter AI System</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+/* GLOBAL */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI, sans-serif;
+}
+
+/* BACKGROUND */
+body{
+height:100vh;
+background:linear-gradient(135deg,#0f172a,#1e293b,#0b1220);
+color:white;
+}
+
+/* ================= LOGIN ================= */
+#loginPage{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
+overflow:hidden;
+}
+
+.glass{
+width:350px;
+padding:30px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,0.2);
+border-radius:15px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.glass h2{
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+border-radius:8px;
+outline:none;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#06b6d4;
+border:none;
+border-radius:8px;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+background:#0891b2;
+}
+
+.error{
+color:#ff4d4d;
+display:none;
+margin-top:10px;
+}
+
+/* ================= DASHBOARD ================= */
+#dashboard{
+display:none;
+height:100vh;
+}
+
+.sidebar{
+width:240px;
+height:100vh;
+background:#111827;
+position:fixed;
+top:0;
+left:0;
+padding:20px;
+}
+
+.sidebar h2{
+color:#06b6d4;
+margin-bottom:30px;
+}
+
+.sidebar li{
+list-style:none;
+padding:12px;
+cursor:pointer;
+border-radius:6px;
+margin-bottom:5px;
+}
+
+.sidebar li:hover{
+background:#1f2937;
+}
+
+.logout{
+background:#dc2626;
+margin-top:30px;
+}
+
+.main{
+margin-left:240px;
+padding:20px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:15px;
+}
+
+.box{
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+margin-top:15px;
+}
+
+table{
+width:100%;
+margin-top:10px;
+border-collapse:collapse;
+}
+
+td,th{
+padding:10px;
+border-bottom:1px solid #334155;
+}
+
+</style>
+</head>
+
 <body>
 
-<!-- LOGIN PAGE -->
+<!-- ================= LOGIN ================= -->
 <div id="loginPage">
 
-    <div class="login-box">
-        <h1>PROJECT PNG INTERNET FILTER</h1>
+<div class="glass">
 
-        <input type="text" id="username" placeholder="Username">
-        <br><br>
+<h2>PNG INTERNET FILTER</h2>
 
-        <input type="password" id="password" placeholder="Password">
-        <br><br>
+<input type="text" id="user" placeholder="Username">
+<input type="password" id="pass" placeholder="Password">
 
-        <button onclick="login()">Login</button>
+<button onclick="login()">LOGIN</button>
 
-        <p id="error" style="color:red;display:none;">
-            Invalid Username or Password
-        </p>
-    </div>
+<div class="error" id="error">Invalid Login</div>
 
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard" style="display:none;">
+</div>
 
-    <!-- SIDEBAR -->
-    <div class="sidebar">
+<!-- ================= DASHBOARD ================= -->
+<div id="dashboard">
 
-        <div class="logo">PNG AI Dashboard</div>
+<!-- SIDEBAR -->
+<div class="sidebar">
+<h2>AI SYSTEM</h2>
 
-        <ul>
-            <li onclick="showHome()"><i class="fas fa-chart-line"></i> Dashboard</li>
-            <li onclick="showSearch()"><i class="fas fa-search"></i> Search Trends</li>
-            <li><i class="fas fa-users"></i> Users</li>
-            <li><i class="fas fa-map"></i> Provinces</li>
-            <li><i class="fas fa-brain"></i> AI</li>
+<li onclick="showHome()">Dashboard</li>
+<li onclick="showSearch()">Search Logs</li>
+<li>Users</li>
+<li>Analytics</li>
 
-            <li onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </li>
-        </ul>
+<li class="logout" onclick="logout()">
+<i class="fas fa-sign-out-alt"></i> Logout
+</li>
+</div>
 
-    </div>
+<!-- MAIN -->
+<div class="main">
 
-    <!-- YOUR EXISTING DASHBOARD CONTENT HERE -->
+<!-- CARDS -->
+<div class="cards">
+<div class="card"><h3>Total Users</h3><h1>5,430</h1></div>
+<div class="card"><h3>Active Sessions</h3><h1>312</h1></div>
+<div class="card"><h3>Blocked Sites</h3><h1>12,983</h1></div>
+<div class="card"><h3>AI Alerts</h3><h1>28</h1></div>
+</div>
+
+<!-- CHART -->
+<div class="grid">
+
+<div class="box">
+<h3>Traffic Analytics</h3>
+<canvas id="chart"></canvas>
+</div>
+
+<div class="box">
+<h3>AI Alerts Feed</h3>
+<p>⚠ Suspicious VPN traffic detected</p>
+<p>⚠ High usage in Lae region</p>
+<p>✔ System stable</p>
+</div>
+
+</div>
+
+<!-- SEARCH -->
+<div class="box" id="searchBox" style="display:none;">
+<h3>Search Logs</h3>
+
+<input id="searchInput" placeholder="Enter keyword">
+<button onclick="addSearch()">Add</button>
+
+<table>
+<thead>
+<tr><th>Keyword</th><th>Time</th></tr>
+</thead>
+<tbody id="table"></tbody>
+</table>
+
+</div>
+
+</div>
 
 </div>
 
 <script>
 
-/* CHECK SESSION */
-
-if(sessionStorage.getItem("loggedIn") === "true"){
-    document.getElementById("loginPage").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-}
-
 /* LOGIN */
-
 function login(){
 
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
+let u = document.getElementById("user").value;
+let p = document.getElementById("pass").value;
 
-    if(user === "Admin" && pass === "Admin"){
+if(u === "Admin" && p === "Admin"){
 
-        sessionStorage.setItem("loggedIn","true");
+sessionStorage.setItem("login","true");
 
-        document.getElementById("loginPage").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
+document.getElementById("loginPage").style.display="none";
+document.getElementById("dashboard").style.display="block";
 
-    }
-    else{
+}else{
+document.getElementById("error").style.display="block";
+}
 
-        document.getElementById("error").style.display = "block";
+}
 
-    }
-
+/* CHECK SESSION */
+if(sessionStorage.getItem("login") === "true"){
+document.getElementById("loginPage").style.display="none";
+document.getElementById("dashboard").style.display="block";
 }
 
 /* LOGOUT */
-
 function logout(){
-
-    if(confirm("Logout?")){
-
-        sessionStorage.clear();
-
-        document.getElementById("dashboard").style.display = "none";
-        document.getElementById("loginPage").style.display = "flex";
-
-    }
-
+if(confirm("Logout system?")){
+sessionStorage.clear();
+location.reload();
+}
 }
 
-/* EXISTING FUNCTIONS */
-
+/* NAV */
 function showSearch(){
-document.getElementById("homeSection").style.display="none";
-document.getElementById("searchSection").style.display="block";
+document.getElementById("searchBox").style.display="block";
 }
 
 function showHome(){
-document.getElementById("homeSection").style.display="block";
-document.getElementById("searchSection").style.display="none";
+document.getElementById("searchBox").style.display="none";
 }
+
+/* SEARCH TABLE */
+let data=[];
+function addSearch(){
+
+let val = document.getElementById("searchInput").value;
+if(val==="") return;
+
+data.push({val,time:new Date().toLocaleString()});
+
+let t = document.getElementById("table");
+t.innerHTML="";
+
+data.forEach(i=>{
+t.innerHTML += `<tr><td>${i.val}</td><td>${i.time}</td></tr>`;
+});
+
+}
+
+/* CHART */
+new Chart(document.getElementById("chart"),{
+type:"line",
+data:{
+labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+datasets:[{
+label:"Traffic",
+data:[1000,2000,3000,2500,4000,6000,7000],
+borderColor:"#06b6d4",
+fill:false
+}]
+}
+});
 
 </script>
 
 </body>
+</html>
