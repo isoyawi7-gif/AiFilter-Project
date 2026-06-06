@@ -3,201 +3,159 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PNG Internet Filter AI System</title>
+<title>PNG AI Internet Filter System</title>
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 
-/* GLOBAL */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI, sans-serif;
-}
-
-/* BACKGROUND */
 body{
-height:100vh;
-background:linear-gradient(135deg,#0f172a,#1e293b,#0b1220);
+margin:0;
+font-family:Segoe UI;
+background:#0b1220;
 color:white;
 }
 
-/* ================= LOGIN ================= */
-#loginPage{
-height:100vh;
+/* TOP BAR */
+.topbar{
 display:flex;
-justify-content:center;
+justify-content:space-between;
 align-items:center;
-position:relative;
-overflow:hidden;
-}
-
-.glass{
-width:350px;
-padding:30px;
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(15px);
-border:1px solid rgba(255,255,255,0.2);
-border-radius:15px;
-text-align:center;
-box-shadow:0 10px 30px rgba(0,0,0,0.4);
-}
-
-.glass h2{
-margin-bottom:20px;
-}
-
-input{
+padding:15px;
+background:#111827;
+position:fixed;
 width:100%;
-padding:12px;
-margin:10px 0;
-border:none;
-border-radius:8px;
-outline:none;
+top:0;
+z-index:10;
 }
 
 button{
-width:100%;
-padding:12px;
-background:#06b6d4;
+padding:10px 15px;
 border:none;
-border-radius:8px;
-color:white;
-font-weight:bold;
 cursor:pointer;
+border-radius:6px;
+background:#06b6d4;
+color:white;
 }
 
 button:hover{
 background:#0891b2;
 }
 
-.error{
-color:#ff4d4d;
-display:none;
-margin-top:10px;
+/* LAYOUT */
+.container{
+display:flex;
+margin-top:60px;
 }
 
-/* ================= DASHBOARD ================= */
-#dashboard{
-display:none;
-height:100vh;
-}
-
+/* SIDEBAR */
 .sidebar{
-width:240px;
+width:220px;
 height:100vh;
 background:#111827;
+padding:15px;
 position:fixed;
-top:0;
-left:0;
-padding:20px;
 }
 
 .sidebar h2{
 color:#06b6d4;
-margin-bottom:30px;
 }
 
-.sidebar li{
-list-style:none;
-padding:12px;
+.sidebar div{
+padding:10px;
 cursor:pointer;
+margin-top:10px;
 border-radius:6px;
-margin-bottom:5px;
 }
 
-.sidebar li:hover{
+.sidebar div:hover{
 background:#1f2937;
 }
 
-.logout{
-background:#dc2626;
-margin-top:30px;
-}
-
+/* MAIN */
 .main{
 margin-left:240px;
 padding:20px;
+width:100%;
 }
 
+/* CARDS */
 .cards{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
 gap:15px;
-margin-bottom:20px;
 }
 
 .card{
 background:#1e293b;
-padding:20px;
+padding:15px;
 border-radius:10px;
 }
 
-.grid{
-display:grid;
-grid-template-columns:2fr 1fr;
-gap:15px;
-}
-
-.box{
+/* FILTER BOX */
+.filter{
 background:#1e293b;
-padding:20px;
+padding:15px;
+margin-top:20px;
 border-radius:10px;
-margin-top:15px;
 }
 
+input,select{
+padding:10px;
+margin:5px;
+border-radius:6px;
+border:none;
+}
+
+/* TABLE */
 table{
 width:100%;
 margin-top:10px;
 border-collapse:collapse;
 }
 
-td,th{
+th,td{
 padding:10px;
 border-bottom:1px solid #334155;
 }
 
+/* CHART GRID */
+.grid{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:15px;
+margin-top:20px;
+}
+
+.box{
+background:#1e293b;
+padding:15px;
+border-radius:10px;
+}
+
 </style>
+
 </head>
 
 <body>
 
-<!-- ================= LOGIN ================= -->
-<div id="loginPage">
-
-<div class="glass">
-
-<h2>PNG INTERNET FILTER</h2>
-
-<input type="text" id="user" placeholder="Username">
-<input type="password" id="pass" placeholder="Password">
-
-<button onclick="login()">LOGIN</button>
-
-<div class="error" id="error">Invalid Login</div>
-
+<!-- TOP BAR -->
+<div class="topbar">
+<div>PNG AI FILTER SYSTEM</div>
+<button onclick="goHome()">🏠 Back Home</button>
 </div>
-
-</div>
-
-<!-- ================= DASHBOARD ================= -->
-<div id="dashboard">
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-<h2>AI SYSTEM</h2>
+<h2>FILTER AI</h2>
 
-<li onclick="showHome()">Dashboard</li>
-<li onclick="showSearch()">Search Logs</li>
-<li>Users</li>
-<li>Analytics</li>
+<div onclick="showAll()">Dashboard</div>
+<div onclick="filterProvince('Morobe')">Morobe</div>
+<div onclick="filterProvince('NCD')">NCD</div>
+<div onclick="filterProvince('Madang')">Madang</div>
+<div onclick="filterProvince('Hela')">Hela</div>
+<div onclick="filterProvince('ENB')">ENB</div>
 
-<li class="logout" onclick="logout()">
-<i class="fas fa-sign-out-alt"></i> Logout
-</li>
 </div>
 
 <!-- MAIN -->
@@ -205,121 +163,170 @@ border-bottom:1px solid #334155;
 
 <!-- CARDS -->
 <div class="cards">
-<div class="card"><h3>Total Users</h3><h1>5,430</h1></div>
-<div class="card"><h3>Active Sessions</h3><h1>312</h1></div>
-<div class="card"><h3>Blocked Sites</h3><h1>12,983</h1></div>
-<div class="card"><h3>AI Alerts</h3><h1>28</h1></div>
+<div class="card">Users <h2>5,240</h2></div>
+<div class="card">Active Sessions <h2>320</h2></div>
+<div class="card">Blocked Sites <h2>12,940</h2></div>
+<div class="card">AI Alerts <h2>18</h2></div>
 </div>
 
-<!-- CHART -->
-<div class="grid">
+<!-- FILTER -->
+<div class="filter">
+<h3>AI Search Filter</h3>
 
+<select id="province">
+<option>All Provinces</option>
+<option>Morobe</option>
+<option>NCD</option>
+<option>Madang</option>
+<option>Hela</option>
+<option>ENB</option>
+</select>
+
+<input type="date" id="dateFilter">
+<input type="time" id="timeFilter">
+
+<button onclick="applyFilter()">Apply Filter</button>
+
+</div>
+
+<!-- TABLE -->
 <div class="box">
-<h3>Traffic Analytics</h3>
-<canvas id="chart"></canvas>
-</div>
-
-<div class="box">
-<h3>AI Alerts Feed</h3>
-<p>⚠ Suspicious VPN traffic detected</p>
-<p>⚠ High usage in Lae region</p>
-<p>✔ System stable</p>
-</div>
-
-</div>
-
-<!-- SEARCH -->
-<div class="box" id="searchBox" style="display:none;">
 <h3>Search Logs</h3>
-
-<input id="searchInput" placeholder="Enter keyword">
-<button onclick="addSearch()">Add</button>
 
 <table>
 <thead>
-<tr><th>Keyword</th><th>Time</th></tr>
+<tr>
+<th>User</th>
+<th>Province</th>
+<th>Keyword</th>
+<th>Date</th>
+<th>Time</th>
+</tr>
 </thead>
+
 <tbody id="table"></tbody>
 </table>
 
 </div>
 
+<!-- CHARTS -->
+<div class="grid">
+
+<div class="box">
+<h3>Traffic Trend</h3>
+<canvas id="lineChart"></canvas>
+</div>
+
+<div class="box">
+<h3>Province Share</h3>
+<canvas id="pieChart"></canvas>
+</div>
+
+</div>
+
+<div class="box" style="margin-top:15px;">
+<h3>Usage Overview</h3>
+<canvas id="barChart"></canvas>
 </div>
 
 </div>
 
 <script>
 
-/* LOGIN */
-function login(){
+/* SAMPLE DATA */
+let logs = [
+{user:"User1",province:"Morobe",keyword:"facebook",date:"2026-06-06",time:"10:10"},
+{user:"User2",province:"NCD",keyword:"youtube",date:"2026-06-06",time:"10:20"},
+{user:"User3",province:"Hela",keyword:"vpn",date:"2026-06-05",time:"11:00"},
+{user:"User4",province:"Madang",keyword:"google",date:"2026-06-05",time:"12:00"},
+{user:"User5",province:"ENB",keyword:"tiktok",date:"2026-06-04",time:"13:30"},
+];
 
-let u = document.getElementById("user").value;
-let p = document.getElementById("pass").value;
-
-if(u === "Admin" && p === "Admin"){
-
-sessionStorage.setItem("login","true");
-
-document.getElementById("loginPage").style.display="none";
-document.getElementById("dashboard").style.display="block";
-
-}else{
-document.getElementById("error").style.display="block";
-}
-
-}
-
-/* CHECK SESSION */
-if(sessionStorage.getItem("login") === "true"){
-document.getElementById("loginPage").style.display="none";
-document.getElementById("dashboard").style.display="block";
-}
-
-/* LOGOUT */
-function logout(){
-if(confirm("Logout system?")){
-sessionStorage.clear();
-location.reload();
-}
-}
-
-/* NAV */
-function showSearch(){
-document.getElementById("searchBox").style.display="block";
-}
-
-function showHome(){
-document.getElementById("searchBox").style.display="none";
-}
-
-/* SEARCH TABLE */
-let data=[];
-function addSearch(){
-
-let val = document.getElementById("searchInput").value;
-if(val==="") return;
-
-data.push({val,time:new Date().toLocaleString()});
-
-let t = document.getElementById("table");
+function renderTable(data){
+let t=document.getElementById("table");
 t.innerHTML="";
-
-data.forEach(i=>{
-t.innerHTML += `<tr><td>${i.val}</td><td>${i.time}</td></tr>`;
+data.forEach(d=>{
+t.innerHTML+=`
+<tr>
+<td>${d.user}</td>
+<td>${d.province}</td>
+<td>${d.keyword}</td>
+<td>${d.date}</td>
+<td>${d.time}</td>
+</tr>`;
 });
-
 }
 
-/* CHART */
-new Chart(document.getElementById("chart"),{
+renderTable(logs);
+
+/* FILTER */
+function applyFilter(){
+
+let p=document.getElementById("province").value;
+let d=document.getElementById("dateFilter").value;
+let t=document.getElementById("timeFilter").value;
+
+let filtered=logs.filter(x=>
+(p==="All Provinces"||x.province===p) &&
+(!d||x.date===d) &&
+(!t||x.time===t)
+);
+
+renderTable(filtered);
+}
+
+/* QUICK PROVINCE FILTER */
+function filterProvince(p){
+document.getElementById("province").value=p;
+applyFilter();
+}
+
+/* SHOW ALL */
+function showAll(){
+document.getElementById("province").value="All Provinces";
+document.getElementById("dateFilter").value="";
+document.getElementById("timeFilter").value="";
+renderTable(logs);
+}
+
+/* BACK HOME */
+function goHome(){
+window.location.href="index.html";
+}
+
+/* LINE CHART */
+new Chart(document.getElementById("lineChart"),{
 type:"line",
 data:{
 labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
 datasets:[{
 label:"Traffic",
-data:[1000,2000,3000,2500,4000,6000,7000],
-borderColor:"#06b6d4",
-fill:false
+data:[120,300,500,400,800,900,1000],
+borderColor:"#06b6d4"
+}]
+}
+});
+
+/* PIE CHART */
+new Chart(document.getElementById("pieChart"),{
+type:"pie",
+data:{
+labels:["Morobe","NCD","Madang","Hela","ENB"],
+datasets:[{
+data:[30,25,15,20,10]
+}]
+}
+});
+
+/* BAR CHART */
+new Chart(document.getElementById("barChart"),{
+type:"bar",
+data:{
+labels:["Users","Sessions","Blocked","Alerts"],
+datasets:[{
+label:"System Load",
+data:[5240,320,12940,18],
+backgroundColor:"#06b6d4"
 }]
 }
 });
